@@ -1,0 +1,142 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-family: "pressStart";
+    box-sizing: border-box;
+}
+@font-face {
+    font-family: "pressStart";
+    font-style: normal;
+    font-weight: 200;
+    src: url("../assets/font/PrStart.ttf");
+}
+body{
+    background-color: #CADC9F;
+}
+fieldset {
+    width: 600px;
+    height: 500px;
+    display: flex;
+    justify-content: space-around;
+    border: 5px solid #306230;
+}
+fieldset label{
+    margin-top: 3px;
+    display: flex;
+    justify-content: space-between;
+}
+fieldset label input{
+    border: 3px solid #306230;
+    background-color: #CADC9F;
+}
+form{
+    width: 800px;
+    height: 600px;
+    position: absolute;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+button{
+    border: 3px solid #306230;
+    background-color: #0f380f;
+    color: #9bbc0f;
+    padding: 20px;
+    
+}
+a {
+    color: #0f380f;
+}
+a:visited {
+    color: #306230;
+}
+/*
+ ----------------------
+*/
+#contenedor{
+    display: flex;
+    flex-flow: row nowrap;
+}
+#opcionesDeJuego {
+    display: flex;
+    flex-flow: column nowrap;
+    border: 5px solid #306230;
+    background-color: #CADC9F;
+    width: calc(100%/3);
+    height: 93vh;
+}
+#opcionesDeJuego h1{
+    align-self: center;
+}
+#opcionesDeJuego select{
+    width: 22%;
+    float:right;
+    margin-right: 8.1%;
+    border: 3px solid #306230;
+    background-color: #CADC9F;
+}
+#opcionesDeJuego input{
+    width: 22%;
+    float:right;
+    margin-right: 8%;
+    border: 3px solid #306230;
+    background-color: #CADC9F;
+}
+#opcionesDeJuego>label{
+    width: 100%;
+    margin-left: 2%;
+    font-weight: bolder;
+    margin-top: 1%;
+}
+#opcionesDeJuego>button{
+    width: 30%;
+    align-self:center; 
+}
+
+#recordsDeCuentas{
+    display: flex;
+    flex-flow: column nowrap;
+    border: 3px solid #306230;
+    background-color: #CADC9F;
+    width: calc(100%/3);
+}
+#recordsDeCuentas .tituloRecord{
+    display: flex;
+    flex-flow: row wrap;
+}
+#recordsDeCuentas .tituloRecord div{
+    width: calc(100%/3);
+    text-align: center;
+    font-weight: bolder;
+    font-size: 24px;
+}
+#recordsDeCuentas .record{
+    display: flex;
+    flex-flow: row nowrap;
+    margin-top: 2%;
+}
+#recordsDeCuentas .record div{
+    width: calc(100%/3);
+    text-align: center;
+    font-weight: lighter;
+    font-size: 20px;
+}
+#instrucciones{
+    display: flex;
+    flex-flow: column nowrap;
+    border: 3px solid #306230;
+    background-color: #CADC9F;
+    width: calc(100%/3);
+}
+#botonSalir{
+    width: 100vw;
+}
+p{
+    margin-top: 20px;
+    text-align: justify;
+}
+/*
+*   Opciones y Récords
+*/
