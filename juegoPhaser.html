@@ -17,9 +17,14 @@ and open the template in the editor.
                 src: url("assets/font/PrStart.ttf");
             }
             canvas {
+                width: 800px;
+                height: 600px;
                 position: absolute;
-                left: 29%;
-                top: 18%;
+                top:0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                margin: auto;
             }
             body{
                 background: url(assets/css_img/gbc.png) no-repeat center center fixed; 
@@ -31,6 +36,10 @@ and open the template in the editor.
         <script src="js/objects/PlayerCharacter.js"></script>
         <script src="js/objects/AI_List.js"></script>
         <script src="js/objects/Enemy.js"></script>
+        <script src="js/Enemigos/Bosses/common.js"></script>
+        <script src="js/Enemigos/Bosses/MegaSlime.js"></script>
+        <script src="js/Enemigos/Bosses/Ninja.js"></script>
+        <script src="js/Enemigos/Bosses/MetalWizard.js"></script>
         <script src="js/Enemigos/Goon.js"></script>
         <script src="js/Enemigos/Soldado.js"></script>
         <script src="js/Enemigos/Lanzacohetes.js"></script>
@@ -43,6 +52,7 @@ and open the template in the editor.
         <script src="js/objects/PlataformasEspeciales.js"></script>
         <script src="js/objects/cargarMapa.js"></script>
         <script src="js/Player/Player.js"></script>
+        <script src="js/Player/Construcciones.js"></script>
         <script src="js/Player/cargarControlesJugador.js"></script>
         <script src="js/carga.js"></script>
     </head>

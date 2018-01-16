@@ -3,6 +3,7 @@
     padding: 0;
     font-family: "pressStart";
     box-sizing: border-box;
+    font-size: 14px;
 }
 @font-face {
     font-family: "pressStart";
@@ -15,9 +16,7 @@ body{
 }
 fieldset {
     width: 600px;
-    height: 500px;
-    display: flex;
-    justify-content: space-around;
+    height: 350px;
     border: 5px solid #306230;
 }
 fieldset label{
@@ -26,12 +25,13 @@ fieldset label{
     justify-content: space-between;
 }
 fieldset label input{
+    margin-top: 3px;
     border: 3px solid #306230;
     background-color: #CADC9F;
 }
 form{
-    width: 800px;
-    height: 600px;
+    width: 600px;
+    height: 350px;
     position: absolute;
     top:0;
     bottom: 0;
@@ -44,13 +44,18 @@ button{
     background-color: #0f380f;
     color: #9bbc0f;
     padding: 20px;
-    
 }
 a {
+    margin-top: 5px;
     color: #0f380f;
 }
 a:visited {
+    margin-top: 5px;
     color: #306230;
+}
+p{
+    margin-top: 20px;
+    text-align: justify;
 }
 /*
  ----------------------
@@ -64,21 +69,23 @@ a:visited {
     flex-flow: column nowrap;
     border: 5px solid #306230;
     background-color: #CADC9F;
-    width: calc(100%/3);
+    width: 40vw;
     height: 93vh;
 }
-#opcionesDeJuego h1{
+h1{
     align-self: center;
+    text-align: center;
+    font-size: 30px;
 }
 #opcionesDeJuego select{
-    width: 22%;
+    width: 24%;
     float:right;
     margin-right: 8.1%;
     border: 3px solid #306230;
     background-color: #CADC9F;
 }
 #opcionesDeJuego input{
-    width: 22%;
+    width: 24%;
     float:right;
     margin-right: 8%;
     border: 3px solid #306230;
@@ -105,23 +112,26 @@ a:visited {
 #recordsDeCuentas .tituloRecord{
     display: flex;
     flex-flow: row wrap;
+    justify-content: space-around;
 }
 #recordsDeCuentas .tituloRecord div{
-    width: calc(100%/3);
+    width: calc(100%/4);
     text-align: center;
     font-weight: bolder;
-    font-size: 24px;
+    font-size: 18px;
 }
 #recordsDeCuentas .record{
     display: flex;
+    text-align: center;
     flex-flow: row nowrap;
-    margin-top: 2%;
+    justify-content: space-around;
+    margin-top: 1%;
 }
 #recordsDeCuentas .record div{
-    width: calc(100%/3);
+    width: calc(100%/4);
     text-align: center;
     font-weight: lighter;
-    font-size: 20px;
+    font-size: 14px;
 }
 #instrucciones{
     display: flex;
@@ -129,14 +139,54 @@ a:visited {
     border: 3px solid #306230;
     background-color: #CADC9F;
     width: calc(100%/3);
+    padding: 1%;
 }
 #botonSalir{
     width: 100vw;
 }
-p{
-    margin-top: 20px;
-    text-align: justify;
+#setupsDificultad{
+    margin-top: 5px;
+    width: 100%;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+}
+#setupsDificultad button{
+    padding: 5px;
 }
 /*
 *   Opciones y Récords
 */
+
+@media screen and (max-width: 1200px){
+    fieldset {
+        width: 100vw;
+        height: 100vh;
+    }
+    fieldset label{
+        margin-top: 10px;
+    }
+    form{
+        width: 100vw;
+        height: 100vh;
+    }
+    #contenedor{
+        display: flex;
+        flex-flow: column nowrap;
+    }
+    #opcionesDeJuego {
+        width: 100%;
+        height: auto;
+    }
+    #opcionesDeJuego h1{
+        font-size: 26px;
+    }
+    #recordsDeCuentas{
+        width: 100%;
+        height: auto;
+    }
+    #instrucciones{
+        width: 100%;
+        height: auto;
+    }
+}

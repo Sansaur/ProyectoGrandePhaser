@@ -1,29 +1,27 @@
 /* global game */
 
 var TECLA_X; // Disparar
-var TECLA_Z; // Saltar
-var TECLA_SHIFT; // Esquivar
-var TECLA_C; // Cohete
+var TECLA_Z; // Esquivar
+var TECLA_C; // Habilidad especial
 var FLECHAS; // Moverse 
 var TECLA_1, TECLA_2, TECLA_3, TECLA_4, TECLA_5, TECLA_6, TECLA_7, TECLA_8, TECLA_9;
 
 
+// Habilidades especiales y esquivar
 var ultimaEsquiva = 0;
-var ultimoCohete = 0;
+var ultimaHabilidadEspecial = 0;
 var ultimoGastoEnergetico = 0;
 
+// CCs, animaciones y control de movimiento
 var cambiaAnimacionMovimiento = 1;
-
 var puedeControlarJugador = true;
-
 var ultimaDireccion = -1; // -1 es Izquierda, 1 es Derecha
-
 var turbo = 0; // Para aumentos de velocidad de movimiento.
+var puedeAtravesar = true;
 
 function cargarControlesJugador() {
     TECLA_X = game.input.keyboard.addKey(Phaser.Keyboard.X);
-    TECLA_Z = game.input.keyboard.addKey(Phaser.Keyboard.Z);
-    TECLA_SHIFT = game.input.keyboard.addKey(Phaser.Keyboard.SHIFT);
+    TECLA_Z = game.input.keyboard.addKey(Phaser.Keyboard.SHIFT);
     TECLA_C = game.input.keyboard.addKey(Phaser.Keyboard.C);
     TECLA_1 = game.input.keyboard.addKey(Phaser.Keyboard.ONE);
     TECLA_2 = game.input.keyboard.addKey(Phaser.Keyboard.TWO);
@@ -56,9 +54,12 @@ function controlesJugador(player) {
 }
 function elegirArma(numero) {
     armaElegida = numero;
-        SFX_EQUIPAR.play();
+    SFX_EQUIPAR.play();
 }
 function movimientoBasico() {
+    if(!player.girando){
+        player.angle = 0;
+    }
     if (TECLA_1.isDown) {
         elegirArma(1);
     } else if (TECLA_2.isDown) {
@@ -87,19 +88,26 @@ function movimientoBasico() {
     } else {
         cambiaAnimacionMovimiento = true;
     }
-    if (TECLA_SHIFT.isDown) {
+    if (TECLA_Z.isDown) {
         if (game.time.now > ultimaEsquiva + 1500) {
             ultimaEsquiva = game.time.now;
             esquivar(player);
         }
     }
     if (TECLA_C.isDown) {
-        if (game.time.now > ultimoCohete + 2000) {
-            ultimoCohete = game.time.now;
-            cohete(player);
+        if (game.time.now > ultimaHabilidadEspecial + 2000) {
+            ultimaHabilidadEspecial = game.time.now;
+            habilidadEspecial();
         }
     }
     if (puedeControlarJugador) {
+        // Atravesar plataformas si mantiene abajo
+        if (FLECHAS.down.isDown) {
+            if (puedeAtravesar && player.body.touching.down) {
+                player.body.y += 15;
+                puedeAtravesar = false;
+            }
+        }
         if (TECLA_X.isDown) {
             // Controlar el disparo
             player.animations.play('disparar');
@@ -183,19 +191,7 @@ function esquivar(player) {
     game.time.events.add(300, finEsquivar, this);
 }
 
-var loopCohete;
-function cohete() {
-    loopCohete = game.time.events.loop(1, function () {
-        player.body.velocity.y = -500;
-        playerEfectoCohete.emitParticle();
-    }, this);
-    game.time.events.add(300, finCohete, this);
 
-}
-
-function finCohete() {
-    game.time.events.remove(loopCohete);
-}
 
 function finEsquivar() {
     puedeControlarJugador = true;
@@ -203,6 +199,89 @@ function finEsquivar() {
     player.canGetHit = 1;
     game.time.events.remove(loopEsquivaFinalizar);
 }
+
+var loopCohete;
+var copia;
+
+function habilidadEspecial() {
+    switch (PlayerAccount.skin) {
+        case "Security":
+            SFX_MOCHILACOHETE.play();
+            loopCohete = game.time.events.loop(1, function () {
+                player.body.velocity.y = -500;
+                playerEfectoCohete.emitParticle();
+            }, this);
+            game.time.events.add(300, finCohete, this);
+            break;
+        case "TimeTrooper":
+            if (copia) {
+                player.body.x = copia.x;
+                player.body.y = copia.y;
+                copia.kill();
+                copia = null;
+                SFX_WOOSHI.play();
+            } else {
+                copia = game.add.sprite(player.body.x, player.body.y, 'player');
+                copia.tint = 0x666666;
+                copia.alpha = 0.7;
+                copia.currentFrame = player.currentFrame;
+                SFX_WOOSH.play();
+            }
+            break;
+        case "Engineer":
+            // Se ve en "Construcciones.js"
+            SFX_TALADRO.play();
+            construir();
+            break;
+        case "Pirate":
+            // Se ve en "Construcciones.js"
+            superEsquivar(player)
+            break;
+
+    }
+}
+var loopSuperEsquiva;
+function superEsquivar(player) {
+    ultimaHabilidadEspecial = ultimaHabilidadEspecial - 750; // Menos enfriamiento
+    SFX_SWISH.play();
+    player.canGetHit = 0;
+    cambiaAnimacionMovimiento = 0;
+    puedeControlarJugador = false;
+    // Si hay ultimaDireccion es que fue a la derecha.
+    if (ultimaDireccion < 0) {
+        loopSuperEsquiva = game.time.events.loop(1, function () {
+            player.body.velocity.x = 600;
+            player.body.velocity.y = -300;
+            player.angle += 10;
+            player.girando = true;
+            player.animations.play('esquivar');
+        }, this);
+    } else {
+        loopSuperEsquiva = game.time.events.loop(1, function () {
+            player.body.velocity.x = -600;
+            player.body.velocity.y = -300;
+            player.angle -= 10;
+            player.girando = true;
+            player.animations.play('esquivar');
+        }, this);
+    }
+    game.time.events.add(300, finSuperEsquivar, this);
+}
+
+
+
+function finSuperEsquivar() {
+    player.girando = false;
+    puedeControlarJugador = true;
+    cambiaAnimacionMovimiento = 1;
+    player.canGetHit = 1;
+    game.time.events.remove(loopSuperEsquiva);
+}
+
+function finCohete() {
+    game.time.events.remove(loopCohete);
+}
+
 
 function disparar() {
     handleDisparar();

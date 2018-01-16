@@ -1,162 +1,180 @@
+function crearPlataforma(x, y, width, height, inverso) {
+    var nuevoSuelo = game.add.tileSprite(x, y - 32, width, height || 32, 'ground');
+    platforms.add(nuevoSuelo);
+    if (inverso) {
+        nuevoSuelo.scale.y = -1;
+    }
+
+    // Suave derecha
+    var nuevoSuave = game.add.tileSprite(nuevoSuelo.body.x + nuevoSuelo.body.width + 32, y - 32, 32, 32, 'suavizado');
+    suaves.add(nuevoSuave);
+    nuevoSuave.scale.x = -1;
+    if (inverso) {
+        nuevoSuave.scale.y = -1;
+    }
+
+    // Suave izquierda
+    nuevoSuave = game.add.tileSprite(x - 32, nuevoSuelo.body.y, 32, 32, 'suavizado');
+    suaves.add(nuevoSuave);
+    nuevoSuave.scale.x = 1;
+    if (inverso) {
+        nuevoSuave.scale.y = -1;
+    }
+    return nuevoSuelo;
+}
+function crearPared(x, y, width, height, inverso, sprite) {
+    var nuevaPared = game.add.tileSprite(x, y - 32, width, height || 32, sprite);
+    platforms.add(nuevaPared);
+    nuevaPared.body.collideWorldBounds = true;
+    nuevaPared.body.immovable = true;
+    nuevaPared.body.allowGravity = false;
+    if (inverso) {
+        nuevaPared.scale.y = -1;
+    }
+    return nuevaPared;
+}
+
 function cargarMapa(mapa) {
     switch (mapa) {
         case "LaX":
             // Base total
-            var nuevoSuelo = game.add.tileSprite(0, game.world.height - 16, game.world.width, 16, 'ground');
-            platforms.add(nuevoSuelo);
+            crearPlataforma(64, game.world.height, game.world.width - 128, 32);
 
-            nuevoSuelo = game.add.tileSprite(200, game.world.height - 150, (game.world.width - 400) / 2, 16, 'ground');
-            platforms.add(nuevoSuelo);
-            nuevoSuelo = game.add.tileSprite((game.world.width - 400) / 3 + 400, game.world.height - 150, (game.world.width - 400) / 2, 16, 'ground');
-            platforms.add(nuevoSuelo);
+            var nuevoSuelo;
+            var nuevoSuave;
 
-            nuevoSuelo = game.add.tileSprite(0, game.world.height - 250, 100, 16, 'ground');
-            platforms.add(nuevoSuelo);
-            nuevoSuelo = game.add.tileSprite(game.world.width - 100, game.world.height - 250, 100, 16, 'ground');
-            platforms.add(nuevoSuelo);
-            nuevoSuelo = game.add.tileSprite(400, game.world.height - 250, (game.world.width - 400) / 4, 16, 'ground');
-            platforms.add(nuevoSuelo);
-            nuevoSuelo = game.add.tileSprite((game.world.width - 600) / 3 + 600, game.world.height - 250, (game.world.width - 400) / 4, 16, 'ground');
-            platforms.add(nuevoSuelo);
+            // Plataformas de la izquierda
+            crearPlataforma(32, game.world.height - 250, 75, 32);
+            crearPlataforma(32, game.world.height - 380, 75, 32);
+            crearPlataforma(32, game.world.height - 510, 75, 32);
+            crearPlataforma(32, game.world.height - 630, 75, 32);
+            crearPlataforma(32, game.world.height - 750, 75, 32);
+            crearPlataforma(32, game.world.height - 870, 75, 32);
 
-            nuevoSuelo = game.add.tileSprite(0, game.world.height - 350, 100, 16, 'ground');
-            platforms.add(nuevoSuelo);
-            nuevoSuelo = game.add.tileSprite(game.world.width - 100, game.world.height - 350, 100, 16, 'ground');
-            platforms.add(nuevoSuelo);
-            nuevoSuelo = game.add.tileSprite(500, game.world.height - 350, (game.world.width - 400) / 5, 16, 'ground');
-            platforms.add(nuevoSuelo);
-            nuevoSuelo = game.add.tileSprite((game.world.width - 600) / 3 + 550, game.world.height - 350, (game.world.width - 400) / 5, 16, 'ground');
-            platforms.add(nuevoSuelo);
+            // Plataformas de la derecha
+            crearPlataforma(game.world.width - 75 - 32, game.world.height - 250, 75, 32);
+            crearPlataforma(game.world.width - 75 - 32, game.world.height - 380, 75, 32);
+            crearPlataforma(game.world.width - 75 - 32, game.world.height - 510, 75, 32);
+            crearPlataforma(game.world.width - 75 - 32, game.world.height - 630, 75, 32);
+            crearPlataforma(game.world.width - 75 - 32, game.world.height - 750, 75, 32);
+            crearPlataforma(game.world.width - 75 - 32, game.world.height - 870, 75, 32);
 
-            nuevoSuelo = game.add.tileSprite(600, game.world.height - 450, (game.world.width - 400) / 6, 16, 'ground');
-            platforms.add(nuevoSuelo);
-            nuevoSuelo = game.add.tileSprite((game.world.width - 600) / 3 + 510, game.world.height - 450, (game.world.width - 400) / 6, 16, 'ground');
-            platforms.add(nuevoSuelo);
+            // La X
+            // Piso 1
+            crearPlataforma(200, game.world.height - 120, (game.world.width - 600) / 2, 32);
+            crearPlataforma(800, game.world.height - 120, (game.world.width - 600) / 2, 32);
+            // Piso 2
+            crearPlataforma(300, game.world.height - 240, (game.world.width - 800) / 2, 32);
+            crearPlataforma(800, game.world.height - 240, (game.world.width - 800) / 2, 32);
+            // Piso 3
+            crearPlataforma(400, game.world.height - 360, (game.world.width - 1000) / 2, 32);
+            crearPlataforma(800, game.world.height - 360, (game.world.width - 1000) / 2, 32);
+            // Piso 4
+            crearPlataforma(500, game.world.height - 480, (game.world.width - 1200) / 2, 32);
+            crearPlataforma(800, game.world.height - 480, (game.world.width - 1200) / 2, 32);
+            // Piso 5
+            crearPlataforma(600, game.world.height - 600, (game.world.width - 1400) / 2, 32);
+            crearPlataforma(800, game.world.height - 600, (game.world.width - 1400) / 2, 32);
 
-            nuevoSuelo = game.add.tileSprite(600, game.world.height - 550, (game.world.width - 400) / 6, 16, 'ground');
-            platforms.add(nuevoSuelo);
-            nuevoSuelo = game.add.tileSprite((game.world.width - 600) / 3 + 510, game.world.height - 550, (game.world.width - 400) / 6, 16, 'ground');
-            platforms.add(nuevoSuelo);
+            // Inverso
+            // Piso 6
+            crearPlataforma(600, game.world.height - 720, (game.world.width - 1400) / 2, 32);
+            crearPlataforma(800, game.world.height - 720, (game.world.width - 1400) / 2, 32);
+            // Piso 7
+            crearPlataforma(500, game.world.height - 840, (game.world.width - 1200) / 2, 32);
+            crearPlataforma(800, game.world.height - 840, (game.world.width - 1200) / 2, 32);
+            // Piso 8
+            crearPlataforma(400, game.world.height - 960, (game.world.width - 1000) / 2, 32);
+            crearPlataforma(800, game.world.height - 960, (game.world.width - 1000) / 2, 32);
+            // Piso 9
+            crearPlataforma(300, game.world.height - 1080, (game.world.width - 800) / 2, 32);
+            crearPlataforma(800, game.world.height - 1080, (game.world.width - 800) / 2, 32);
 
-            nuevoSuelo = game.add.tileSprite(0, game.world.height - 650, 100, 16, 'ground');
-            platforms.add(nuevoSuelo);
-            nuevoSuelo = game.add.tileSprite(game.world.width - 100, game.world.height - 650, 100, 16, 'ground');
-            platforms.add(nuevoSuelo);
-            nuevoSuelo = game.add.tileSprite(500, game.world.height - 650, (game.world.width - 400) / 5, 16, 'ground');
-            platforms.add(nuevoSuelo);
-            nuevoSuelo = game.add.tileSprite((game.world.width - 600) / 3 + 550, game.world.height - 650, (game.world.width - 400) / 5, 16, 'ground');
-            platforms.add(nuevoSuelo);
+            portales.add(new SpawnEnemigo(game, game.world.width - 75 - 32, game.world.height - 510 -32, 75, 32));
+            portales.add(new SpawnEnemigo(game, 600 + (game.world.width - 1400) / 4, game.world.height - 600 - 32));
+            portales.add(new SpawnEnemigo(game, 600 + (game.world.width - 1400) / 4, game.world.height - 600 - 32));
+            portales.add(new SpawnEnemigo(game, 800 + (game.world.width - 1400) / 4, game.world.height - 600 - 32));
+            portales.add(new SpawnEnemigo(game, 600 + (game.world.width - 1400) / 4, game.world.height - 720 - 32));
+            portales.add(new SpawnEnemigo(game, 800 + (game.world.width - 1400) / 4, game.world.height - 720 - 32));
+            portales.add(new SpawnEnemigo(game, 300 + (game.world.width - 800) / 4, game.world.height - 1080 - 32));
+            portales.add(new SpawnEnemigo(game, 800 + (game.world.width - 800) / 4, game.world.height - 1080 - 32));
 
-            nuevoSuelo = game.add.tileSprite(0, game.world.height - 750, 100, 16, 'ground');
-            platforms.add(nuevoSuelo);
-            portales.add(new SpawnEnemigo(game,nuevoSuelo.body.x+32, nuevoSuelo.body.y-16));
-            nuevoSuelo = game.add.tileSprite(game.world.width - 100, game.world.height - 750, 100, 16, 'ground');
-            platforms.add(nuevoSuelo);
-            portales.add(new SpawnEnemigo(game,nuevoSuelo.body.x+32, nuevoSuelo.body.y-16));
-            nuevoSuelo = game.add.tileSprite(400, game.world.height - 750, (game.world.width - 400) / 4, 16, 'ground');
-            platforms.add(nuevoSuelo);
-            portales.add(new SpawnEnemigo(game,nuevoSuelo.body.x+32, nuevoSuelo.body.y-16));
-            nuevoSuelo = game.add.tileSprite((game.world.width - 600) / 3 + 600, game.world.height - 750, (game.world.width - 400) / 4, 16, 'ground');
-            platforms.add(nuevoSuelo);
-            portales.add(new SpawnEnemigo(game,nuevoSuelo.body.x+32, nuevoSuelo.body.y-16));
-
-
-            var nuevoSuelo = game.add.tileSprite(0, -game.world.height + 16, game.world.width, 16, 'ground');
+            var nuevoSuelo = game.add.tileSprite(0, -game.world.height + 32, game.world.width, 32, 'ground');
             platforms.add(nuevoSuelo);
             break;
         case "Factorio":
             // Base total
-            var nuevoSuelo = game.add.tileSprite(0, game.world.height - 16, game.world.width, 16, 'ground');
-            platforms.add(nuevoSuelo);
+            crearPlataforma(32, game.world.height, game.world.width, 32);
 
             // Cuatro ascensores
-            nuevoSuelo = new Ascensor(game, 50, game.world.height - 150, 150, 16, 'ground');
+            nuevoSuelo = new Ascensor(game, 375, game.world.height - 250, 200, 32);
             platforms.add(nuevoSuelo);
-            nuevoSuelo = new Ascensor(game, 400, game.world.height - 250, 150, 16, 'ground');
+            nuevoSuelo = new Ascensor(game, 725, game.world.height - 350, 200, 32);
             platforms.add(nuevoSuelo);
-            nuevoSuelo = new Ascensor(game, 800, game.world.height - 350, 150, 16, 'ground');
-            platforms.add(nuevoSuelo);
-            nuevoSuelo = new Ascensor(game, 1200, game.world.height - 450, 150, 16, 'ground');
+            nuevoSuelo = new Ascensor(game, 1075, game.world.height - 450, 200, 32);
             platforms.add(nuevoSuelo);
 
-            // Tres pisos
-            nuevoSuelo = game.add.tileSprite(250, game.world.height - 150, 125, 16, 'ground');
-            platforms.add(nuevoSuelo);
-            portales.add(new SpawnEnemigo(game,nuevoSuelo.body.x+32, nuevoSuelo.body.y-16));
-            nuevoSuelo = game.add.tileSprite(600, game.world.height - 150, 125, 16, 'ground');
-            platforms.add(nuevoSuelo);
-            nuevoSuelo = game.add.tileSprite(1000, game.world.height - 150, 125, 16, 'ground');
-            platforms.add(nuevoSuelo);
-            nuevoSuelo = game.add.tileSprite(1400, game.world.height - 150, 125, 16, 'ground');
-            platforms.add(nuevoSuelo);
-            portales.add(new SpawnEnemigo(game,nuevoSuelo.body.x+32, nuevoSuelo.body.y-16));
+            // cinco pisos
+            crearPlataforma(200 + 32, game.world.height - 130, 150, 32);
+            crearPlataforma(200 + 32, game.world.height - 280, 150, 32);
+            crearPlataforma(200 + 32, game.world.height - 430, 150, 32);
+            crearPlataforma(200 + 32, game.world.height - 580, 150, 32);
+            crearPlataforma(200 + 32, game.world.height - 730, 150, 32);
 
-            nuevoSuelo = game.add.tileSprite(250, game.world.height - 350, 125, 16, 'ground');
-            platforms.add(nuevoSuelo);
-            portales.add(new SpawnEnemigo(game,nuevoSuelo.body.x+32, nuevoSuelo.body.y-16));
-            nuevoSuelo = game.add.tileSprite(600, game.world.height - 350, 125, 16, 'ground');
-            platforms.add(nuevoSuelo);
-            nuevoSuelo = game.add.tileSprite(1000, game.world.height - 350, 125, 16, 'ground');
-            platforms.add(nuevoSuelo);
-            nuevoSuelo = game.add.tileSprite(1400, game.world.height - 350, 125, 16, 'ground');
-            platforms.add(nuevoSuelo);
-            portales.add(new SpawnEnemigo(game,nuevoSuelo.body.x+32, nuevoSuelo.body.y-16));
+            crearPlataforma(550 + 32, game.world.height - 130, 150, 32);
+            crearPlataforma(550 + 32, game.world.height - 280, 150, 32);
+            crearPlataforma(550 + 32, game.world.height - 430, 150, 32);
+            crearPlataforma(550 + 32, game.world.height - 580, 150, 32);
+            crearPlataforma(550 + 32, game.world.height - 730, 150, 32);
 
-            nuevoSuelo = game.add.tileSprite(250, game.world.height - 550, 125, 16, 'ground');
-            platforms.add(nuevoSuelo);
-            portales.add(new SpawnEnemigo(game,nuevoSuelo.body.x+32, nuevoSuelo.body.y-16));
-            nuevoSuelo = game.add.tileSprite(600, game.world.height - 550, 125, 16, 'ground');
-            platforms.add(nuevoSuelo);
-            nuevoSuelo = game.add.tileSprite(1000, game.world.height - 550, 125, 16, 'ground');
-            platforms.add(nuevoSuelo);
-            nuevoSuelo = game.add.tileSprite(1400, game.world.height - 550, 125, 16, 'ground');
-            platforms.add(nuevoSuelo);
-            portales.add(new SpawnEnemigo(game,nuevoSuelo.body.x+32, nuevoSuelo.body.y-16));
+            crearPlataforma(900 + 32, game.world.height - 130, 150, 32);
+            crearPlataforma(900 + 32, game.world.height - 280, 150, 32);
+            crearPlataforma(900 + 32, game.world.height - 430, 150, 32);
+            crearPlataforma(900 + 32, game.world.height - 580, 150, 32);
+            crearPlataforma(900 + 32, game.world.height - 730, 150, 32);
+
+            crearPlataforma(1250 + 32, game.world.height - 130, 150, 32);
+            crearPlataforma(1250 + 32, game.world.height - 280, 150, 32);
+            crearPlataforma(1250 + 32, game.world.height - 430, 150, 32);
+            crearPlataforma(1250 + 32, game.world.height - 580, 150, 32);
+            crearPlataforma(1250 + 32, game.world.height - 730, 150, 32);
 
             // Plataformas horizontales
-            nuevoSuelo = new PlataformaHorizontal(game, 50, game.world.height - 750, 150, 16, 'ground');
+            nuevoSuelo = new PlataformaHorizontal(game, 50, game.world.height - 900, 200, 32);
             platforms.add(nuevoSuelo);
-            nuevoSuelo = new PlataformaHorizontal(game, 100, game.world.height - 875, 150, 16, 'ground');
+            nuevoSuelo = new PlataformaHorizontal(game, 100, game.world.height - 1000, 200, 32);
             platforms.add(nuevoSuelo);
-            nuevoSuelo = new PlataformaHorizontal(game, 150, game.world.height - 1100, 150, 16, 'ground');
-            platforms.add(nuevoSuelo);
-            nuevoSuelo = new PlataformaHorizontal(game, 200, game.world.height - 450, 150, 16, 'ground');
+            nuevoSuelo = new PlataformaHorizontal(game, 150, game.world.height - 1100, 200, 32);
             platforms.add(nuevoSuelo);
 
 
-            nuevoSuelo = game.add.tileSprite(0, -game.world.height + 16, game.world.width, 16, 'ground');
+            nuevoSuelo = game.add.tileSprite(0, -game.world.height + 32, game.world.width, 32, 'ground');
             platforms.add(nuevoSuelo);
             break;
         case "Jungla":
             for (var i = 1; i < 20; i++) {
                 if (i % 2 === 0) {
-                    nuevoSuelo = game.add.tileSprite(0, i * 100, 300, 16, 'ground');
-                    platforms.add(nuevoSuelo);
-                    nuevoSuelo = game.add.tileSprite(game.world.width / 2 - 150, i * 100, 300, 16, 'ground');
-                    platforms.add(nuevoSuelo);
-                    nuevoSuelo = game.add.tileSprite(game.world.width - 300, i * 100, 300, 16, 'ground');
-                    platforms.add(nuevoSuelo);
+                    crearPlataforma(0, i * 100, 300, 32);
+                    crearPlataforma(game.world.width / 2 - 150, i * 100, 300, 32);
+                    crearPlataforma(game.world.width - 300, i * 100, 300, 32);
                 } else {
-                    nuevoSuelo = game.add.tileSprite(450, i * 100, 90, 16, 'ground');
-                    platforms.add(nuevoSuelo);
-                    nuevoSuelo = game.add.tileSprite(game.world.width / 2 - 45, i * 100, 90, 16, 'ground');
-                    platforms.add(nuevoSuelo);
-                    nuevoSuelo = game.add.tileSprite(game.world.width - 500, i * 100, 90, 16, 'ground');
-                    platforms.add(nuevoSuelo);
-                    portales.add(new SpawnEnemigo(game,nuevoSuelo.body.x+32, nuevoSuelo.body.y-16));
+                    crearPlataforma(450, i * 100, 90, 32);
+                    crearPlataforma(game.world.width / 2 - 45, i * 100, 90, 32);
+                    crearPlataforma(game.world.width - 500, i * 100, 90, 32);
                 }
             }
+            // portales.add(new SpawnEnemigo(game, nuevoSuelo.body.x + 32, nuevoSuelo.body.y - 32));
             break;
         case "Chino":
             // Simplemente un campo largo
-            var nuevoSuelo = game.add.tileSprite(0, game.world.height - 16, game.world.width, 16, 'ground');
+            var nuevoSuelo = game.add.tileSprite(0, game.world.height - 32, game.world.width, 32, 'ground');
             platforms.add(nuevoSuelo);
-            portales.add(new SpawnEnemigo(game,nuevoSuelo.body.x+32, nuevoSuelo.body.y-16));
-            portales.add(new SpawnEnemigo(game,game.world.width-64, nuevoSuelo.body.y-16));
-            portales.add(new SpawnEnemigo(game,game.world.width/2, nuevoSuelo.body.y-16));
-            portales.add(new SpawnEnemigo(game,game.world.width-400, 128));
-            portales.add(new SpawnEnemigo(game,nuevoSuelo.body.x+400, 128));
-            
+            portales.add(new SpawnEnemigo(game, nuevoSuelo.body.x + 32, nuevoSuelo.body.y - 32));
+            portales.add(new SpawnEnemigo(game, game.world.width - 64, nuevoSuelo.body.y - 32));
+            portales.add(new SpawnEnemigo(game, game.world.width / 2, nuevoSuelo.body.y - 32));
+            portales.add(new SpawnEnemigo(game, game.world.width - 400, 128));
+            portales.add(new SpawnEnemigo(game, nuevoSuelo.body.x + 400, 128));
+
             break;
     }
 }

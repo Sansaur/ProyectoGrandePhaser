@@ -24,14 +24,22 @@ Municion = function (game, x, y, sprite, cantidad, tipo) {
     this.body.bounce.x = 0;
     this.body.collideWorldBounds = false;
     this.body.velocity.x = 0;
-    this.body.velocity.y = -300;
+    this.body.velocity.y = -200;
     this.tipo = tipo || 1; // 1 = Balas, 2 = Explosivos, 3 = Energia, 4 = Vida
     this.cantidad = cantidad;
+    this.tiempoMuerte = game.time.now + 30000;
     ammoBoxes.add(this);
 };
 Municion.prototype = Object.create(Phaser.Sprite.prototype);
 Municion.prototype.constructor = Municion;
 Municion.prototype.update = function () {
+    if(!this.alive){
+        return;
+    }
+    if(this.tipo === 5){
+        game.physics.arcade.moveToObject(this, player, 100);
+        this.tiempoMuerte += 10000;
+    }
     game.physics.arcade.collide(this, platforms, function (caja, platform) {
         
     });
@@ -41,7 +49,12 @@ Municion.prototype.update = function () {
             case 2: municionExpActual += caja.cantidad;if(municionExpActual>municionExpMax){municionExpActual=municionExpMax;};break;
             case 3: municionEnergiaActual += caja.cantidad;if(municionEnergiaActual>municionEnergiaMax){municionEnergiaActual=municionEnergiaMax;};break;
             case 4: if(health===100){return;}health += caja.cantidad;if(health>100){health=100;};actualizarVida();break;
+            case 5: health=100;actualizarVida();municionBalasActual=municionBalasMax;municionExpActual=municionExpMax;municionEnergiaActual=municionEnergiaMax;SFX_THREAT.play();break;
         }
-        caja.kill();
+        SFX_AMMOPICKUP.play();
+        caja.destroy();
     });
+    if(game.time.now > this.tiempoMuerte){
+        this.destroy();
+    }
 };

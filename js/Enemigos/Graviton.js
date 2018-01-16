@@ -14,6 +14,7 @@ Graviton = function (game, x, y, damage) {
     this.body.bounce.x = 1;
     this.body.collideWorldBounds = true;
     this.body.velocity.x = 80;
+    this.isBoss = false;
     //this.anchor.x = 0.5;
     //this.anchor.y = 0.5;
     // damageDealt es para saber cuanto daño hacen.
@@ -27,11 +28,16 @@ Graviton = function (game, x, y, damage) {
 Graviton.prototype = Object.create(Phaser.Sprite.prototype);
 Graviton.prototype.constructor = Graviton;
 Graviton.prototype.dropearMuerte = function () {
+    if (!this) {
+        return;
+    }
     puntos += this.damageDealt + 40 + PlayerAccount.dificultad;
     var nuevaMunicion = new Municion(game, this.body.x, this.body.y, "energyAmmo", 5, 3);
+    this.kill();
 }
 Graviton.prototype.update = function () {
     if (!this.alive) {
+        this.eventoDisparo = null;
         return;
     }
     // MAXIMO DE VELOCIDAD PARA ESTE ENEMIGO
@@ -50,17 +56,20 @@ Graviton.prototype.update = function () {
     if (Phaser.Math.distance(player.body.x, player.body.y, this.body.x, this.body.y) < 150) {
         if (!this.eventoDisparo) {
             this.eventoDisparo = game.time.events.add(550, function () {
+                if (!this) {
+                    return;
+                }
                 this.eventoDisparo = null;
                 if (player.body.y > this.body.y) {
 
                     if (this.alive) {
                         SFX_ENEMYSHOTLASER.play();
-                        var balaEnemiga = new EnemyRocket(game, this.body.x, this.body.y + this.body.height / 2, this.damageDealt, 80, "coheteEnemigo", 1, 0, 0, 2000, true);
+                        var balaEnemiga = new EnemyRocket(game, this.body.x, this.body.y + this.body.height / 2, this.damageDealt, 80, "coheteEnemigo", 1, 0, 0, 1500, true);
                     }
                 } else {
                     if (this.alive) {
                         SFX_ENEMYSHOTLASER.play();
-                        var balaEnemiga = new EnemyRocket(game, this.body.x, this.body.y + this.body.height / 2, this.damageDealt, 80, "coheteEnemigo", -1, 0, 0, 2000, true);
+                        var balaEnemiga = new EnemyRocket(game, this.body.x, this.body.y + this.body.height / 2, this.damageDealt, 80, "coheteEnemigo", -1, 0, 0, 1500, true);
                     }
                 }
             }, this);
