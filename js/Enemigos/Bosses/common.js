@@ -14,7 +14,7 @@ function bossSpawn() {
         item.alpha = 0.3;
     }, this);
     enemies.forEach(function (item) {
-        item.dropearMuerte();
+        //item.dropearMuerte();
         if (item.alive) {
             item.kill();
         }
@@ -23,7 +23,8 @@ function bossSpawn() {
     
 
     var nuevaMunicion = new Municion(game, player.body.x, player.body.y - 48, "fullAmmoPack", 10, 5);
-    var eleccion = game.rnd.integerInRange(1, 3);
+    // RECORDAR CAMBIAR ESTO
+    var eleccion = game.rnd.integerInRange(2, 2);
     SFX_BOSS_INCOMING.play();
     if (!EVENTO_ADDED) {
         SFX_BOSS_INCOMING.onStop.add(function () {
@@ -81,6 +82,13 @@ function bossSpawn() {
                     }
                     PARED_1 = crearPared(0, game.world.height - 700, 64, game.world.height, 0, "slimeboss");
                     PARED_2 = crearPared(game.world.width - 64, game.world.height - 700, 64, game.world.height, 0, "slimeboss");
+                    break;
+                case 4:
+                    NUEVAMUSICA = game.add.audio('GlitchBoss');
+                    NUEVAMUSICA.volume = 0.4;
+                    NUEVAMUSICA.play();
+                    // Recordar hacer este boss con dos partes
+                    var nuevoBoss = new Glitch(game, game.world.width / 2, game.world.height / 2, 12);
                     break;
             }
         }, this);

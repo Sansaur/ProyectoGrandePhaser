@@ -38,12 +38,14 @@ function cargarControlesJugador() {
 function controlesJugador(player) {
     //  Reset the players velocity (movement)
     player.body.velocity.x = 0;
+    // Tiempo de invencibilidad
     if (puedeControlarJugador) {
         movimientoBasico(player);
     }
     // 
-    if (!player.canGetHit) {
+    if (player.canGetHit) {
         player.alpha = 0.5;
+        player.canGetHit-=10;
     } else {
         player.alpha = 1;
     }
@@ -89,7 +91,7 @@ function movimientoBasico() {
         cambiaAnimacionMovimiento = true;
     }
     if (TECLA_Z.isDown) {
-        if (game.time.now > ultimaEsquiva + 1500) {
+        if (game.time.now > ultimaEsquiva + 2000) {
             ultimaEsquiva = game.time.now;
             esquivar(player);
         }
@@ -173,18 +175,18 @@ var loopEsquivaFinalizar;
 
 function esquivar(player) {
     SFX_SWISH.play();
-    player.canGetHit = 0;
+    player.canGetHit += 300;
     cambiaAnimacionMovimiento = 0;
     puedeControlarJugador = false;
     // Si hay ultimaDireccion es que fue a la derecha.
     if (ultimaDireccion > 0) {
         loopEsquivaFinalizar = game.time.events.loop(1, function () {
-            player.body.velocity.x = 600;
+            player.body.velocity.x = 630;
             player.animations.play('esquivar');
         }, this);
     } else {
         loopEsquivaFinalizar = game.time.events.loop(1, function () {
-            player.body.velocity.x = -600;
+            player.body.velocity.x = -630;
             player.animations.play('esquivar');
         }, this);
     }
@@ -196,7 +198,6 @@ function esquivar(player) {
 function finEsquivar() {
     puedeControlarJugador = true;
     cambiaAnimacionMovimiento = 1;
-    player.canGetHit = 1;
     game.time.events.remove(loopEsquivaFinalizar);
 }
 
@@ -212,6 +213,7 @@ function habilidadEspecial() {
                 playerEfectoCohete.emitParticle();
             }, this);
             game.time.events.add(300, finCohete, this);
+            ultimaHabilidadEspecial = ultimaHabilidadEspecial - 250; // un poco menos de enfriamiento
             break;
         case "TimeTrooper":
             if (copia) {
@@ -237,6 +239,13 @@ function habilidadEspecial() {
             // Se ve en "Construcciones.js"
             superEsquivar(player)
             break;
+        case "Riot":
+            // Se ve en "Construcciones.js"
+            if(ESCUDO){
+                ESCUDO.kill();
+            }
+            ESCUDO = new Escudo(game);
+            break;
 
     }
 }
@@ -244,7 +253,7 @@ var loopSuperEsquiva;
 function superEsquivar(player) {
     ultimaHabilidadEspecial = ultimaHabilidadEspecial - 750; // Menos enfriamiento
     SFX_SWISH.play();
-    player.canGetHit = 0;
+    player.canGetHit += 300;
     cambiaAnimacionMovimiento = 0;
     puedeControlarJugador = false;
     // Si hay ultimaDireccion es que fue a la derecha.
@@ -274,7 +283,6 @@ function finSuperEsquivar() {
     player.girando = false;
     puedeControlarJugador = true;
     cambiaAnimacionMovimiento = 1;
-    player.canGetHit = 1;
     game.time.events.remove(loopSuperEsquiva);
 }
 

@@ -12,14 +12,46 @@
  * if (animName(chopper)=='hover') chopper.play('turnLeft');
  function animName(obj){ return obj.animations.currentAnim.name;}
  */
+BeamIn = function (game) {
+    Phaser.Sprite.call(this, game, player.body.x, player.body.y, "beam_in");
+    game.physics.enable(this, Phaser.Physics.ARCADE);
+    this.collideWorldBounds = false;
+    this.enableBody = false;
+    this.animacion = this.animations.add('lanzamiento', [0, 1, 2, 3, 4, 5], 3, true);
+    this.body.gravity.y = 0;
+    this.body.velocity.x = 0;
+    this.body.bounce.y = 0;// 0.7 + Math.random() * 0.2;
+    this.body.bounce.x = 0;
+    this.body.collideWorldBounds = false;
+    this.anchor.setTo(0.5, 0.5);
+    // damageDealt es para saber cuanto daño hacen.
+    //enemyBullets.add(this);
+    this.game.add.existing(this);
+    this.scale.x = 2;
+    this.scale.y = 0;
+    this.alpha = 1;
+};
+BeamIn.prototype = Object.create(Phaser.Sprite.prototype);
+BeamIn.prototype.constructor = BeamIn;
+BeamIn.prototype.update = function () {
+
+};
+
 function loadPlayer() {
-    game.time.events.add(2000, function () {
-        SFX_INTRO.play();
-        player.revive();
-        puedeControlarJugador = true;
-    })
+    //game.time.events.add(2000, function () {
+    //
+    //})
     game.time.events.add(40, function () {
-        player.kill();
+        puedeControlarJugador = false;
+        player.alpha = 0;
+        var NEWBEAMIN = new BeamIn(game);
+        NEWBEAMIN.animacion.play();
+        NEWBEAMIN.animacion.onComplete.add(function () {
+            SFX_INTRO.play();
+            player.alpha = 1;
+            //player.revive();
+            puedeControlarJugador = true;
+        });
     })
     player = game.add.sprite(game.world.width / 2, game.world.height - 32, 'player');
     player.anchor.setTo(0.5, 0.5);
@@ -40,7 +72,9 @@ function loadPlayer() {
     player.animations.add('quieto', [0, 1, 2, 3, 4], 10, true);
 
     // Nuevas variables para el jugador
-    player.canGetHit = 1;
+    // canGetHit es un TIEMPO en milisegundos, mientras sea superior a 0 se irá disminuyendo en el update del jugador
+    // Mientras sea superior a 0 no se le puede golpear al jugador
+    player.canGetHit = 3000;
 
     // Permite rebotar sobre enemigos
     player.jumpImmunity = 1;
@@ -117,10 +151,9 @@ function controlarChoqueEnemigo(player, enemy) {
         } else {
             turbo = 250;
         }
-        player.canGetHit = 0;
+        player.canGetHit += 450;
         game.time.events.add(1000, function () {
             turbo = 0;
-            player.canGetHit = 1;
         }, this);
         player.jumpImmunity = 0;
         game.time.events.add(1500, function () {
@@ -131,7 +164,7 @@ function controlarChoqueEnemigo(player, enemy) {
     }
 }
 function perderVida(player, enemy) {
-    if (player.canGetHit) {
+    if (!player.canGetHit) {
         SFX_EXPLOSION.play();
         health -= enemy.damageDealt;
         actualizarVida();
@@ -141,16 +174,12 @@ function perderVida(player, enemy) {
         } else {
             game.add.tween(player).to({x: player.x - 100}, 200, "Linear", true);
         }
-        player.canGetHit = 0;
+        player.canGetHit += 450;
         game.time.events.add(300, finAnimacion, this);
-        game.time.events.add(1000, finInvulnerabilidad, this);
     }
 }
 function finAnimacion() {
     puedeControlarJugador = true;
-}
-function finInvulnerabilidad() {
-    player.canGetHit = 1;
 }
 
 function actualizarVida() {
