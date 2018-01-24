@@ -8,6 +8,7 @@ var EVENTO_ADDED = false;
 var PARED_1;
 var PARED_2;
 var HA_HABIDO_SLIME = 0;
+var JUEGO_GANADO = false;
 function bossSpawn() {
     MUSICA.stop();
     portales.forEach(function (item) {
@@ -159,33 +160,7 @@ function pararEventoCronometro() {
 }
 
 function victoria() {
-    /*game.paused = true;
-     imagenFondo.tint = 0x444444;
-     explosiones.forEach(function (item) {
-     item.tint = 0x444444;
-     });
-     platforms.forEach(function (item) {
-     item.tint = 0x444444;
-     });
-     enemies.forEach(function (item) {
-     item.tint = 0x444444;
-     });
-     enemyBullets.forEach(function (item) {
-     item.tint = 0x444444;
-     });
-     portales.forEach(function (item) {
-     item.tint = 0x444444;
-     });
-     ammoBoxes.forEach(function (item) {
-     item.tint = 0x444444;
-     });
-     suaves.forEach(function (item) {
-     item.tint = 0x444444;
-     });
-     */
-    /*
-     * Guardamos antes del final, por si aca
-     */
+    JUEGO_GANADO = true;
     MUSICA.stop();
     MUSICA.volume = 0.4;
     MUSICA = game.add.audio("victoria");
@@ -228,11 +203,11 @@ function crearBarraVidaJefe(){
     actualizarBarraVidaJefe();
 }
 function actualizarBarraVidaJefe(){
-    BARRA_VIDA_JEFE.forEach(function (item) {
-        item.kill();
-    });
-    for (var i = 0; i < boss.health; i++) {
-        var nuevoHit = game.add.tileSprite(0 + i * 10, 560, 10, 10, 'hpBAR');
-        BARRA_VIDA_JEFE.add(nuevoHit);
-    }
+//    BARRA_VIDA_JEFE.forEach(function (item) {
+//        item.kill();
+//    });
+//    for (var i = 0; i < boss.health; i++) {
+//        var nuevoHit = game.add.tileSprite(0 + i * 10, 560, 10, 10, 'hpBAR');
+//        BARRA_VIDA_JEFE.add(nuevoHit);
+//    }
 }
