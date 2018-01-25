@@ -135,8 +135,8 @@ and open the template in the editor.
                 actualizarInformacionPersonaje();
             }
             function rellenarCuenta(cuentaActual) {
-                var MI = parseInt($('#MBI').val());
-                var MM = parseInt($('#MBM').val());
+                var MI = parseInt($('#MBI').val()) || 0;
+                var MM = parseInt($('#MBM').val()) || 0;
                 if (MM > 999) {
                     MM = 999;
                 }
@@ -146,8 +146,8 @@ and open the template in the editor.
                 cuentaActual.inicialMunicionBalas = (MI < 0) ? 0 : MI;
                 cuentaActual.maximoMunicionBalas = (MM < 0) ? 0 : MM;
 
-                MI = parseInt($('#MEI').val());
-                MM = parseInt($('#MEM').val());
+                MI = parseInt($('#MEI').val()) || 0;
+                MM = parseInt($('#MEM').val()) || 0;
                 if (MM > 999) {
                     MM = 999;
                 }
@@ -157,8 +157,8 @@ and open the template in the editor.
                 cuentaActual.inicialMunicionExplosiva = (MI < 0) ? 0 : MI;
                 cuentaActual.maximoMunicionExplosiva = (MM < 0) ? 0 : MM;
 
-                MI = parseInt($('#MNI').val());
-                MM = parseInt($('#MNM').val());
+                MI = parseInt($('#MNI').val()) || 0;
+                MM = parseInt($('#MNM').val()) || 0;
                 if (MM > 999) {
                     MM = 999;
                 }
@@ -170,9 +170,9 @@ and open the template in the editor.
 
                 cuentaActual.mapa = $('#mapa').val();
                 cuentaActual.skin = $('#skin').val();
-                cuentaActual.dificultad = parseInt($('#handicap').val());
-                cuentaActual.tiempoParaElBoss = parseInt($('#TPB').val());
-                cuentaActual.maxBosses = parseInt($('#CBN').val());
+                cuentaActual.dificultad = parseInt($('#handicap').val()) || 0;
+                cuentaActual.tiempoParaElBoss = parseInt($('#TPB').val())  || 1;
+                cuentaActual.maxBosses = parseInt($('#CBN').val())  || 0;
                 console.log($('#HB').prop('checked'));
                 if ($('#HB').prop('checked')) {
                     cuentaActual.hayBoss = true;
