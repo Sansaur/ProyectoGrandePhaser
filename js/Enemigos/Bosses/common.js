@@ -28,10 +28,10 @@ function bossSpawn() {
     // RECORDAR CAMBIAR ESTO
     // Me cago en la slime, la verdad
     // La slime es siempre el jefe del final, al matarlo, "HA_HABIDO_SLIME" valdrá 1 y así no podrá aparecer dos veces
-    var eleccion = game.rnd.integerInRange(1, 4 - HA_HABIDO_SLIME);
     SFX_BOSS_INCOMING.play();
     if (!EVENTO_ADDED) {
         SFX_BOSS_INCOMING.onStop.add(function () {
+            var eleccion = game.rnd.integerInRange(1, 4 - HA_HABIDO_SLIME);
             switch (eleccion) {
                 case 1:
                     NUEVAMUSICA = game.add.audio('NinjaBoss');
